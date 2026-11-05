@@ -418,7 +418,7 @@ intentflow-skills/
 ### Checks and releases
 
 - **Every pull request** runs the checks: each `SKILL.md` has a valid name and description, the README lists every skill, its links work, and every diagram renders. Run the skill checks locally with `python scripts/check_skills.py` (needs `pyyaml`).
-- **To publish a new version:** update the skills, add a section for the new version to [`CHANGELOG.md`](CHANGELOG.md), merge, then push a tag such as `v1.1.0`. The release workflow checks everything again, zips each skill, and publishes a GitHub Release with the changelog section as its notes.
+- **To publish a new version:** update the skills and add a section for the new version to [`CHANGELOG.md`](CHANGELOG.md), then merge. Next, open **Actions → Release → Run workflow** and enter the version (for example `v1.1.0`); this works from the GitHub mobile site too. Pushing a tag such as `v1.1.0` works as well. The release workflow checks everything again, zips each skill, and publishes a GitHub Release with the changelog section as its notes.
 
 ---
 

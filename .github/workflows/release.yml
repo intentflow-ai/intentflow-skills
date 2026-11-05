@@ -1,10 +1,19 @@
 name: Release
 
-# Push a version tag (e.g. v1.0.0) to publish a GitHub Release with every skill
-# zipped for upload to the Claude app, plus one archive with all skills.
+# Publishes a GitHub Release with every skill zipped for upload to the Claude app,
+# plus one archive with all skills for Claude Code. Start it either way:
+#   - Actions tab > Release > Run workflow, and enter a version such as v1.0.0
+#   - or push a version tag such as v1.0.0
+# Running it again for a version that's already released refreshes that release's zips and notes.
+# The version needs its own section in CHANGELOG.md.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, for example v1.0.0"
+        required: true
 
 permissions:
   contents: write
@@ -12,8 +21,18 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v7
+
+      - name: Check the version
+        run: |
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version must look like v1.2.3 (got '$TAG')." >&2
+            exit 1
+          fi
 
       - uses: actions/setup-python@v7
         with:
@@ -30,7 +49,7 @@ jobs:
 
       - name: Release notes from CHANGELOG.md
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${TAG#v}"
           awk -v head="## [$version]" '
             index($0, head) == 1 { found = 1; next }
             found && /^## \[/ { exit }
@@ -38,7 +57,7 @@ jobs:
             found { print }
           ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
           if [ ! -s "$RUNNER_TEMP/notes.md" ]; then
-            echo "CHANGELOG.md has no section for $version. Add one before tagging." >&2
+            echo "CHANGELOG.md has no section for $version. Add one before releasing." >&2
             exit 1
           fi
           {
@@ -49,11 +68,18 @@ jobs:
             echo "- **Claude Code:** download \`intentflow-skills-all.zip\` and unzip it into \`~/.claude/skills/\`."
           } >> "$RUNNER_TEMP/notes.md"
 
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Publish the GitHub Release
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/*.zip \
-            --title "IntentFlow $GITHUB_REF_NAME" \
-            --notes-file "$RUNNER_TEMP/notes.md" \
-            --verify-tag
+          title="IntentFlow $TAG"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            # A release with this tag already exists (for example, created on the Releases page):
+            # attach the zips and use the changelog notes.
+            gh release upload "$TAG" dist/*.zip --clobber
+            gh release edit "$TAG" --title "$title" --notes-file "$RUNNER_TEMP/notes.md"
+          elif gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" dist/*.zip --title "$title" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag
+          else
+            # No tag yet: create it on the commit this workflow checked out.
+            gh release create "$TAG" dist/*.zip --title "$title" --notes-file "$RUNNER_TEMP/notes.md" --target "$GITHUB_SHA"
+          fi
+          echo "Published $title"
