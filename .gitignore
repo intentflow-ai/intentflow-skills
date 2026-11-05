@@ -1,0 +1,3 @@
+# Skill zips built by scripts/package_skills.sh
+dist/
+.DS_Store

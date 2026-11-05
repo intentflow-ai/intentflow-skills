@@ -1,5 +1,9 @@
 # IntentFlow
 
+[![Checks](https://github.com/intentflow-ai/intentflow-skills/actions/workflows/checks.yml/badge.svg)](https://github.com/intentflow-ai/intentflow-skills/actions/workflows/checks.yml)
+[![Latest release](https://img.shields.io/github/v/release/intentflow-ai/intentflow-skills)](https://github.com/intentflow-ai/intentflow-skills/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 **From idea to production with a team of AI agents, built as Claude skills.**
 
 IntentFlow is a team of ten AI agents that takes a product from a rough idea to a released, monitored application. An Orchestrator brainstorms the idea with you and then runs nine specialists in order: a Business Analyst, a UX Designer, a Solution Architect, four developers, a QA Engineer and a DevOps Engineer. Each agent asks instead of assuming, verifies its work with evidence, and waits for your approval at every decision point.
@@ -272,10 +276,10 @@ Every document opens with the same Document Control table (version, date, prepar
 
 ### 1. Install the skills
 
-Each skill lives in its own folder under [`skills/`](skills/), with a single `SKILL.md`.
+Each skill lives in its own folder under [`skills/`](skills/), with a single `SKILL.md`. The [latest release](https://github.com/intentflow-ai/intentflow-skills/releases/latest) has every skill ready-zipped.
 
-- **Claude app (web, desktop, mobile):** zip each skill folder (for example `intentflow-orchestrator/` with its `SKILL.md` inside), then add it under **Customize → Skills → + → Upload a skill**. Repeat for all ten.
-- **Claude Code:** copy the folders into `~/.claude/skills/` to use them in every project, or into a project's `.claude/skills/` to use them in that project only.
+- **Claude app (web, desktop, mobile):** download each skill's zip from the latest release (for example `intentflow-orchestrator.zip`), then add it under **Customize → Skills → + → Upload a skill**. Repeat for all ten. You can also zip a skill folder yourself.
+- **Claude Code:** download `intentflow-skills-all.zip` from the latest release and unzip it into `~/.claude/skills/` to use the skills in every project, or into a project's `.claude/skills/` to use them in that project only. Copying the folders from `skills/` works too.
 
 Custom skills are private to your account until you share them; on Team and Enterprise plans you can share them with colleagues or your whole organization.
 
@@ -390,6 +394,14 @@ Open a new chat in the project and say:
 ```text
 intentflow-skills/
 ├── README.md
+├── CHANGELOG.md
+├── LICENSE
+├── .github/workflows/
+│   ├── checks.yml              # runs on every pull request
+│   └── release.yml             # runs when a version tag is pushed
+├── scripts/
+│   ├── check_skills.py         # validates skill files and the README
+│   └── package_skills.sh       # zips each skill for upload
 └── skills/
     ├── intentflow-orchestrator/SKILL.md
     ├── intentflow-brd-builder/SKILL.md
@@ -402,6 +414,11 @@ intentflow-skills/
     ├── intentflow-qa-engineer/SKILL.md
     └── intentflow-devops-engineer/SKILL.md
 ```
+
+### Checks and releases
+
+- **Every pull request** runs the checks: each `SKILL.md` has a valid name and description, the README lists every skill, its links work, and every diagram renders. Run the skill checks locally with `python scripts/check_skills.py` (needs `pyyaml`).
+- **To publish a new version:** update the skills, add a section for the new version to [`CHANGELOG.md`](CHANGELOG.md), merge, then push a tag such as `v1.1.0`. The release workflow checks everything again, zips each skill, and publishes a GitHub Release with the changelog section as its notes.
 
 ---
 
