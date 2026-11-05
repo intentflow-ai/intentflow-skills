@@ -414,3 +414,9 @@ intentflow-skills/
 - **Long projects span chats.** Run each stage in its own chat inside the project, with the tracker and documents in the project files.
 - **Errors and success are both designed.** Every API error has a stable code linked to the message users see, and every KPI has a tracking plan entry, so the Orchestrator can review real numbers after release.
 - **IntentFlow skills come first.** If you also use plugins with similar skills (brainstorming, specs, architecture, testing, deployment, design), keep IntentFlow work inside the IntentFlow project, where the project instructions route requests to the IntentFlow agents.
+
+---
+
+## License
+
+IntentFlow is released under the [MIT License](LICENSE). You are free to use, modify and share these skills, including commercially, as long as the copyright notice is kept.
