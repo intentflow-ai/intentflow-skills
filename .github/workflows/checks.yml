@@ -1,0 +1,49 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    name: Skills and README
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: python -m pip install --quiet pyyaml
+
+      - name: Check skill files and README
+        run: python scripts/check_skills.py
+
+      - name: Package skills (dry run)
+        run: bash scripts/package_skills.sh dist
+
+  diagrams:
+    name: README diagrams render
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+
+      - name: Render every Mermaid diagram in the README
+        run: |
+          echo '{"args": ["--no-sandbox"]}' > "$RUNNER_TEMP/puppeteer.json"
+          mkdir -p "$RUNNER_TEMP/diagrams"
+          npx --yes @mermaid-js/mermaid-cli@11 \
+            --puppeteerConfigFile "$RUNNER_TEMP/puppeteer.json" \
+            --input README.md \
+            --output "$RUNNER_TEMP/diagrams/README.md"
+          ls "$RUNNER_TEMP/diagrams"
