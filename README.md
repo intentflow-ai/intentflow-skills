@@ -291,31 +291,31 @@ Create a project named **IntentFlow** and paste these project instructions:
 # IntentFlow: from idea to production
 
 ## Start here
-For new ideas, project status, or anything spanning several stages, use the **intentflow-orchestrator** skill. It brainstorms with the user, runs the specialist skills in order, pauses for approval between stages, and keeps the project tracker (INTENTFLOW_<Project>_TRACKER.md) in the project files. Specialist skills can still be used directly for one-off tasks.
+For new ideas, project status, or anything spanning several stages, use the intentflow-orchestrator skill. It brainstorms with the user, runs the specialist skills in order, pauses for approval between stages, and keeps the project tracker (INTENTFLOW_<Project>_TRACKER.md) in the project files. Specialist skills can still be used directly for one-off tasks.
 
 ## How it works
-0. **Brainstorm** (Orchestrator) → Idea Brief
-1. **Requirements** (BRD Builder) → BRD
-2. **UX design** (UX Designer) → UX spec, Design and Design System artifacts; skipped when there's no user interface
-3. **Technical design** (TSD Builder) → TSD
-4. **Delivery Plan** (Orchestrator) → team, order, exit criteria
-5. **Build** (Full-Stack, Frontend, Backend, Mobile Developers) → code and QA handoffs
-6. **Test** (QA Engineer, with design QA by the UX Designer) → QA Test Report and GitHub Issues
-7. **Fix and retest** (developers and QA)
-8. **Release** (DevOps Engineer for web and backend; the user for app stores)
-9. **Operate and learn** (Orchestrator reviews KPIs against the tracking plan, with the DevOps Engineer)
+0. Brainstorm (Orchestrator) → Idea Brief
+1. Requirements (BRD Builder) → BRD
+2. UX design (UX Designer) → UX spec, Design and Design System artifacts; skipped when there's no user interface
+3. Technical design (TSD Builder) → TSD
+4. Delivery Plan (Orchestrator) → team, order, exit criteria
+5. Build (Full-Stack, Frontend, Backend, Mobile Developers) → code and QA handoffs
+6. Test (QA Engineer, with design QA by the UX Designer) → QA Test Report and GitHub Issues
+7. Fix and retest (developers and QA)
+8. Release (DevOps Engineer for web and backend; the user for app stores)
+9. Operate and learn (Orchestrator reviews KPIs against the tracking plan, with the DevOps Engineer)
 
 ## Which skill to use
-- **intentflow-orchestrator:** new ideas, project status, multi-stage work, change requests.
-- **intentflow-brd-builder:** requirements, scope, user stories, a BRD.
-- **intentflow-ux-designer:** user flows, screens, wireframes, mockups, design systems, UX copy, reviews of existing designs, design QA.
-- **intentflow-tsd-builder:** architecture, tech stack, a technical spec or TSD.
-- **intentflow-frontend-developer:** React/Next.js UI work and Vercel previews.
-- **intentflow-backend-developer:** databases, APIs, Supabase, migrations, RLS.
-- **intentflow-fullstack-developer:** features spanning UI and backend, web pull request checks, cross-layer debugging, upgrades.
-- **intentflow-mobile-developer:** iOS and Android apps, mobile pull request checks, internal test builds, store release preparation.
-- **intentflow-qa-engineer:** test plans, automated and exploratory testing, bug reports, release recommendations.
-- **intentflow-devops-engineer:** deployment pipelines, releases, rollbacks, monitoring, incidents, environments, backups, security and cost.
+- intentflow-orchestrator: new ideas, project status, multi-stage work, change requests.
+- intentflow-brd-builder: requirements, scope, user stories, a BRD.
+- intentflow-ux-designer: user flows, screens, wireframes, mockups, design systems, UX copy, reviews of existing designs, design QA.
+- intentflow-tsd-builder: architecture, tech stack, a technical spec or TSD.
+- intentflow-frontend-developer: React/Next.js UI work and Vercel previews.
+- intentflow-backend-developer: databases, APIs, Supabase, migrations, RLS.
+- intentflow-fullstack-developer: features spanning UI and backend, web pull request checks, cross-layer debugging, upgrades.
+- intentflow-mobile-developer: iOS and Android apps, mobile pull request checks, internal test builds, store release preparation.
+- intentflow-qa-engineer: test plans, automated and exploratory testing, bug reports, release recommendations.
+- intentflow-devops-engineer: deployment pipelines, releases, rollbacks, monitoring, incidents, environments, backups, security and cost.
 
 ## Ground rules
 - Ask, don't assume. Anything the user hasn't confirmed goes into Open Questions, never into a document as fact.
@@ -398,7 +398,7 @@ intentflow-skills/
 ├── LICENSE
 ├── .github/workflows/
 │   ├── checks.yml              # runs on every pull request
-│   └── release.yml             # runs when a version tag is pushed
+│   └── release.yml             # publishes a release (Actions tab or version tag)
 ├── scripts/
 │   ├── check_skills.py         # validates skill files and the README
 │   └── package_skills.sh       # zips each skill for upload
